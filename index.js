@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const {parseISO, compareAsc, isBefore, format} = require('date-fns')
 require('dotenv').config();
 
-const {delay, sendEmail, logStep} = require('./utils');
+const {delay, sendMessage, logStep} = require('./utils');
 const {siteInfo, loginCred, IS_PROD, NEXT_SCHEDULE_POLL, MAX_NUMBER_OF_POLL, NOTIFY_ON_DATE_BEFORE} = require('./config');
 
 let isLoggedIn = false;
