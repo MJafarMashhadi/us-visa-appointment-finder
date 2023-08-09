@@ -16,9 +16,9 @@ This is just a script I put together to check and notify me via email ([SendGrid
 
 copy the example configuration file exampe in `.env.example`, rename the copied version to `.env` and replace the values.
 
-### SendGrid config values
+### Telegram config values
 
-You can create a free account with https://www.sendgrid.com/ which should be sufficient and use the provided sandbox domain on your dashboard. The `SENDGRID_API_KEY` can be found in your SendGrid settings, it starts with `SG.xxxxxx`. You'll need to add authorised sending email.
+Create a bot and add it to a channel as admin. Config the CHAT_ID and BOT_ID in the env file.
 
 
 ## FAQ
