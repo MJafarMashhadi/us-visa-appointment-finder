@@ -26,7 +26,8 @@ module.exports = {
   NOTIFY_ON_DATE_BEFORE: process.env.NOTIFY_ON_DATE_BEFORE, // in ISO format i.e YYYY-MM-DD
 
   NOTIFY_EMAILS: process.env.NOTIFY_EMAILS, // comma separated list of emails
-  sendGrid: {
-    API_KEY: process.env.SENDGRID_API_KEY,
+  telegram: {
+    CHAT_ID: process.env.CHAT_ID,
+    BOT_ID: process.env.BOT_ID,
   }
 }

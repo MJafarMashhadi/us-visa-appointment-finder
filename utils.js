@@ -1,6 +1,6 @@
-const sgMail = require('@sendgrid/mail')
 const config = require('./config');
-sgMail.setApiKey(config.sendGrid.API_KEY);
+const https = require('https');
+
 const debug = async (page, logName, saveScreenShot) => {
   if(saveScreenShot){
     await page.screenshot({path: `${logName}.png`});
@@ -13,16 +13,43 @@ const debug = async (page, logName, saveScreenShot) => {
 
 const delay = timeout => new Promise(resolve => setTimeout(resolve, timeout));
 
-const sendEmail = async (params) => {
-  const data = {
-    from: 'manavjaiswal21@gmail.com',
-    to: config.NOTIFY_EMAILS,
-    subject: 'Hello US VISA schedules',
-    ...params
+const sendMessage = async (text) => {
+  // Thank you Chat GPT :')
+  const url = `https://api.telegram.org/bot${config.telegram.BOT_ID}/sendMessage`;
+
+  const params = new URLSearchParams({
+    chat_id: config.telegram.CHAT_ID,
+    text: text,
+    parse_mode: "HTML"
+  });
+
+  const options = {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/octet-stream",
+      "User-Agent": "Google-Cloud-Scheduler"
+    }
   };
+
+  const sendRequest = async () => {
+    return new Promise((resolve, reject) => {
+      const request = https.request(`${url}?${params}`, options, (response) => {
+        // Handle the response here if needed
+        resolve(response);
+      });
+
+      request.on('error', (error) => {
+        // Handle any errors that occur during the request
+        reject(error);
+      });
+
+      request.end();
+    });
+  };
+
   try {
-    await sgMail.send(data);
-  } catch(error) {
+    const response = await sendRequest();
+  } catch (error) {
     console.log(error);
   }
 };
@@ -34,6 +61,6 @@ const logStep = (stepTitle) => {
 module.exports = {
   debug,
   delay,
-  sendEmail,
+  sendMessage,
   logStep
 }

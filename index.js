@@ -31,9 +31,8 @@ const login = async (page) => {
 
 const notifyMe = async (earliestDate) => {
   const formattedDate = format(earliestDate, 'dd-MM-yyyy');
-  logStep(`sending an email to schedule for ${formattedDate}`);
-  await sendEmail({
-    subject: `We found an earlier date ${formattedDate}`,
+  logStep(`sending an message to schedule for ${formattedDate}`);
+  await sendMessage({
     text: `Hurry and schedule for ${formattedDate} before it is taken.`
   })
 }
@@ -45,7 +44,7 @@ const getDatesForFacility = async (page, url) => {
       return document.querySelector('body').innerText
     });
     console.log(bodyText);
-    const parsedBody =  JSON.parse(bodyText);
+    const parsedBody = JSON.parse(bodyText);
 
     if(!Array.isArray(parsedBody)) {
       throw "Failed to parse dates, probably because you are not logged in";
