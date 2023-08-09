@@ -93,9 +93,6 @@ const process = async (browser) => {
     await notifyMe(earliestDate);
   } else {
     console.log(`Earliest date ${earliestDate} is not before the desired`);
-    await sendMessage({
-      text: `TEST. TODELETE. ${earliestDate} before it is taken.`
-    });
   }
 
   await delay(NEXT_SCHEDULE_POLL)
