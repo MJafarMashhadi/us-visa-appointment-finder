@@ -13,14 +13,14 @@ const debug = async (page, logName, saveScreenShot) => {
 
 const delay = timeout => new Promise(resolve => setTimeout(resolve, timeout));
 
-const sendMessage = async (text) => {
+const sendMessage = async (params) => {
   // Thank you Chat GPT :')
   const url = `https://api.telegram.org/bot${config.telegram.BOT_ID}/sendMessage`;
 
   const params = new URLSearchParams({
     chat_id: config.telegram.CHAT_ID,
-    text: text,
-    parse_mode: "HTML"
+    parse_mode: "HTML",
+    ...params
   });
 
   const options = {
