@@ -1,17 +1,17 @@
 {
   "name": "us-visa-appointment-finder",
   "version": "1.0.0",
-  "description": "This is to help me in getting notified when there's an earliest appointment slot. Modified version of us-visa-appointment-notifier by Theophilus Omoregbee <theo4u@ymail.com>.",
+  "description": "This is to help me in getting notified when there's an earliest appointment slot. Modified version of us-visa-appointment-notifier by Manav Jaiswal <manavjaiswal21@gmail.com> which is a modified version of Theophilus Omoregbee <theo4u@ymail.com>.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },
-  "author": "Manav Jaiswal <manavjaiswal21@gmail.com>",
+  "author": "MJ Mashhadi <me@mjafar.me>",
   "license": "MIT",
   "dependencies": {
     "date-fns": "^2.29.2",
     "dotenv": "^16.0.1",
-    "puppeteer": "^16.2.0"
+    "puppeteer": "^21.0.2"
   }
 }
