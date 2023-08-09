@@ -1,0 +1,15 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - build
+      - --tag
+      - ${_DOCKER_REMOTE}/usvisa:$SHORT_SHA
+      - --tag
+      - ${_DOCKER_REMOTE}/usvisa:latest
+      - --tag
+      - usvisa
+      - .
+    id: build-image
+images:
+  - ${_DOCKER_REMOTE}/usvisa:$SHORT_SHA
+  - ${_DOCKER_REMOTE}/usvisa:latest 
