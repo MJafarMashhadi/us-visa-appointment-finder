@@ -100,7 +100,7 @@ const process = async (browser) => {
 
 
 (async () => {
-  const browser = await puppeteer.launch(!IS_PROD ? {headless: false}: undefined);
+  const browser = await puppeteer.launch(!IS_PROD ? {headless: "new"}: undefined);
 
   try{
     await process(browser);
