@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const {parseISO, compareAsc, isBefore, format} = require('date-fns')
 require('dotenv').config();
 
-const {delay, sendEmail, logStep} = require('./utils');
+const {delay, sendMessage, logStep} = require('./utils');
 const {siteInfo, loginCred, IS_PROD, NEXT_SCHEDULE_POLL, MAX_NUMBER_OF_POLL, NOTIFY_ON_DATE_BEFORE} = require('./config');
 
 let isLoggedIn = false;
@@ -91,6 +91,8 @@ const process = async (browser) => {
   const earliestDate = await checkForSchedules(page);
   if(earliestDate && isBefore(earliestDate, parseISO(NOTIFY_ON_DATE_BEFORE))){
     await notifyMe(earliestDate);
+  } else {
+    console.log(`Earliest date ${earliestDate} is not before the desired`);
   }
 
   await delay(NEXT_SCHEDULE_POLL)
@@ -100,7 +102,7 @@ const process = async (browser) => {
 
 
 (async () => {
-  const browser = await puppeteer.launch(!IS_PROD ? {headless: false}: undefined);
+  const browser = await puppeteer.launch(!IS_PROD ? {headless: "new"}: undefined);
 
   try{
     await process(browser);
