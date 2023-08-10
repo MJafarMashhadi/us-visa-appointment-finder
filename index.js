@@ -33,7 +33,7 @@ const notifyMe = async (earliestDate) => {
   const formattedDate = format(earliestDate, 'dd-MM-yyyy');
   logStep(`sending an message to schedule for ${formattedDate}`);
   await sendMessage({
-    text: `Hurry and schedule for ${formattedDate} before it is taken.`
+    text: `Hurry and <a href="https://ais.usvisa-info.com/en-ca/niv/schedule/51163502/appointment">schedule</a> for ${formattedDate} before it is taken.`
   })
 }
 const getDatesForFacility = async (page, url) => {
