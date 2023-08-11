@@ -29,11 +29,11 @@ const login = async (page) => {
   return true;
 }
 
-const notifyMe = async (earliestDate) => {
-  const formattedDate = format(earliestDate, 'dd-MM-yyyy');
-  logStep(`sending an message to schedule for ${formattedDate}`);
+const notifyMe = async (earliestDate, times) => {
+  const formattedDate = format(earliestDate, 'MMM dd, yyyy');
+  logStep(`sending an message to schedule for ${formattedDate} ${times}`);
   await sendMessage({
-    text: `Hurry and <a href="https://ais.usvisa-info.com/en-ca/niv/schedule/51163502/appointment">schedule</a> for ${formattedDate} before it is taken.`
+    text: `Trying to <a href="https://ais.usvisa-info.com/${siteInfo.COUNTRY_CODE}/niv/schedule/${siteInfo.SCHEDULE_ID}/appointment">reschedule</a> for ${formattedDate} ${times}.`
   })
 }
 const getDatesForFacility = async (page, url) => {
@@ -50,7 +50,7 @@ const getDatesForFacility = async (page, url) => {
       throw "Failed to parse dates, probably because you are not logged in";
     }
 
-    const dates =parsedBody.map(item => parseISO(item.date));
+    const dates = parsedBody.map(item => parseISO(item.date));
     return dates;
   }catch(err){
     console.log("Unable to parse page JSON content", originalPageContent);
@@ -73,6 +73,20 @@ const checkForSchedules = async (page) => {
   return earliest;
 }
 
+const getTimesForDate = async (page, date) => {
+  await page.setExtraHTTPHeaders({
+    'Accept': 'application/json, text/javascript, */*; q=0.01',
+    'X-Requested-With': 'XMLHttpRequest'
+  });
+  await page.goto(`https://ais.usvisa-info.com/${siteInfo.COUNTRY_CODE}/niv/schedule/${siteInfo.SCHEDULE_ID}/appointment/times/${siteInfo.FACILITY_ID}.json?date=${date}&appointments\[expedite\]=false`);
+  const originalPageContent = await page.content();
+  const bodyText = await page.evaluate(() => {
+    return document.querySelector('body').innerText
+  });
+  const parsedBody = JSON.parse(bodyText);
+  return parsedBody["available_times"];
+}
+
 
 const process = async (browser) => {
   logStep(`starting process with ${maxTries} tries left`);
@@ -90,7 +104,10 @@ const process = async (browser) => {
 
   const earliestDate = await checkForSchedules(page);
   if(earliestDate && isBefore(earliestDate, parseISO(NOTIFY_ON_DATE_BEFORE))){
-    await notifyMe(earliestDate);
+    const times = await getTimesForDate(page, earliestDate);
+    const latest_time = times[times.length - 1];
+    console.log(`Available at ${earliestDate} ${latest_time} (${times})`);
+    await notifyMe(earliestDate, times);
   } else {
     console.log(`Earliest date ${earliestDate} is not before the desired`);
   }
